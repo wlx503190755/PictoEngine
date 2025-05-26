@@ -1,0 +1,21 @@
+services:
+  comfyui:
+    image: pictoengine:latest
+    build: .
+    volumes:
+      - /data/models:/ComfyUI/models:rw
+      - /data/custom_nodes:/ComfyUI/custom_nodes:rw
+      - /data/venv:/ComfyUI/venv:rw
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - 8800:8188
+    stop_signal: SIGKILL
+      #    detach: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
