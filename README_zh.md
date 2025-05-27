@@ -35,12 +35,12 @@ chmod +x ./scripts/run_docker.sh
 ## 使用说明
 
 ### 主要命令
-- 初始化：`./run_docker.sh init`
-- 启动服务：`./run_docker.sh start`
-- 停止服务：`./run_docker.sh stop`
-- 重启服务：`./run_docker.sh restart`
-- 查看状态：`./run_docker.sh status`
-- 查看日志：`./run_docker.sh logs`
+- 初始化：`./scripts/run_docker.sh init`
+- 启动服务：`./scripts/run_docker.sh start`
+- 停止服务：`./scripts/run_docker.sh stop`
+- 重启服务：`./scripts/run_docker.sh restart`
+- 查看状态：`./scripts/run_docker.sh status`
+- 查看日志：`./scripts/run_docker.sh logs`
 
 ### 脚本功能说明
 `run_docker.sh` 脚本提供以下功能：

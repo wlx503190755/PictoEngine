@@ -27,19 +27,19 @@ cd PictoEngine
 
 ### 2. Run Deployment Script
 ```bash
-chmod +x run_docker.sh
-./run_docker.sh or ./scripts/run_docker.sh
+chmod +x ./scripts/run_docker.sh
+./scripts/run_docker.sh
 ```
 
 ## Usage
 
 ### Main Commands
-- Initialize: `./run_docker.sh init`
-- Start service: `./run_docker.sh start`
-- Stop service: `./run_docker.sh stop`
-- Restart service: `./run_docker.sh restart`
-- Check status: `./run_docker.sh status`
-- View logs: `./run_docker.sh logs`
+- Initialize: `./scripts/run_docker.sh init`
+- Start service: `./scripts/run_docker.sh start`
+- Stop service: `./scripts/run_docker.sh stop`
+- Restart service: `./scripts/run_docker.sh restart`
+- Check status: `./scripts/run_docker.sh status`
+- View logs: `./scripts/run_docker.sh logs`
 
 ### Script Features
 The `run_docker.sh` script provides the following features:
