@@ -88,20 +88,20 @@ build() {
 
 # 首次初始化
 init() {
-#    init_system
-#    read -p "请选择操作: 输入 'local' 进行本地构建，输入 'docker' 下载镜像: " choice
-#    if [ "$choice" == "local" ]; then
-#        echo -e "${YELLOW}开始本地构建...${NC}"
-#        build  # 调用构建函数
-#    elif [ "$choice" == "docker" ]; then
-#        echo -e "${YELLOW}根据 docker-compose.yml 下载镜像...${NC}"
-#        # 这里可以添加下载镜像的逻辑，例如：
-#        cd "$PROJECT_ROOT/docker"
-#        docker-compose pull
-#    else
-#        echo -e "${RED}无效选择，请输入 'local' 或 'docker'。${NC}"
-#        exit 1
-#    fi
+    init_system
+    read -p "请选择操作: 输入 'local' 进行本地构建，输入 'docker' 下载镜像: " choice
+    if [ "$choice" == "local" ]; then
+        echo -e "${YELLOW}开始本地构建...${NC}"
+        build  # 调用构建函数
+    elif [ "$choice" == "docker" ]; then
+        echo -e "${YELLOW}根据 docker-compose.yml 下载镜像...${NC}"
+        # 这里可以添加下载镜像的逻辑，例如：
+        cd "$PROJECT_ROOT/docker"
+        docker-compose pull
+    else
+        echo -e "${RED}无效选择，请输入 'local' 或 'docker'。${NC}"
+        exit 1
+    fi
 
     copy_container_files
     download_models
