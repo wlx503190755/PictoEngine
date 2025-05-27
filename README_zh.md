@@ -5,7 +5,7 @@ Comfu Docker 是一个基于 Docker 的容器化部署解决方案，用于简�
 
 ## 目录结构 
 ```
-comfy_docker/
+PictoEngine/
 ├── docker/
 ├── scripts/
 └── README.md
@@ -22,14 +22,14 @@ comfy_docker/
 ### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/comfy_docker.git
-cd comfu_docker
+git clone https://github.com/pictorialink/PictoEngine.git
+cd PictoEngine
 ```
 
 ### 2. 运行部署脚本
 ```bash
-chmod +x run_docker.sh
-./run_docker.sh 或 ./scripts/run_docker.sh
+chmod +x ./scripts/run_docker.sh
+./scripts/run_docker.sh
 ```
 
 ## 使用说明

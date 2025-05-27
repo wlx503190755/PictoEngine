@@ -5,7 +5,7 @@ Comfy Docker is a containerized deployment solution based on Docker, designed to
 
 ## Directory Structure
 ```
-comfy_docker/
+PictoEngine/
 ├── docker/
 ├── scripts/
 └── README.md
@@ -21,8 +21,8 @@ comfy_docker/
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/yourusername/comfy_docker.git
-cd comfy_docker
+git clone https://github.com/pictorialink/PictoEngine.git
+cd PictoEngine
 ```
 
 ### 2. Run Deployment Script
