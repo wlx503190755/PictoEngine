@@ -36,7 +36,7 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
         # RHEL/CentOS
         yum install -y yum-utils
         yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        yum install -y docker-ce docker-ce-cli containerd.io
+        yum install -y docker-ce docker-ce-cli containerd.io git git-lfs
     else
         # Ubuntu/Debian
         # 移除旧版本（如果存在）
@@ -47,6 +47,8 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
         apt-get install -y \
             ca-certificates \
             curl \
+            git \
+            git-lfs \
             gnupg \
             lsb-release
 
