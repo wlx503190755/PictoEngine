@@ -1,7 +1,7 @@
-# Comfy Docker
+# PictoEngine
 
 ## Project Overview
-Comfy Docker is a containerized deployment solution based on Docker, designed to simplify the deployment and management process of applications.
+PictoEngine is a containerized deployment solution based on Docker, designed to simplify the deployment and management process of applications.
 
 ## Directory Structure
 ```
