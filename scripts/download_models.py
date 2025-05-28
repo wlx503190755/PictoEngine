@@ -142,8 +142,8 @@ def main():
                     print(f"错误：模型配置格式不正确")
                     continue
                     
-                if 'url' not in model_info or 'path' not in model_info:
-                    print(f"错误：模型缺少必要的 url 或 path 配置")
+                if not model_info.get('url') or not model_info.get('path'):
+                    print(f"跳过模型: {model_info.get('name', 'unknown')}，因为 url 或 path 为空")
                     continue
                     
                 url = model_info['url']
