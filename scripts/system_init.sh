@@ -40,11 +40,11 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
     else
         # Ubuntu/Debian
         # 移除旧版本（如果存在）
-        apt-get remove -y docker docker-engine docker.io containerd runc
+        DEBIAN_FRONTEND=noninteractive apt-get remove -y docker docker-engine docker.io containerd runc
         
         # 安装必要的依赖
         apt-get update
-        apt-get install -y \
+        DEBIAN_FRONTEND=noninteractive apt-get install -y \
             ca-certificates \
             curl \
             git \
@@ -65,7 +65,7 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
 
         # 安装 Docker
         apt-get update
-        apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     fi
     
     # 启动 Docker 服务
@@ -113,12 +113,12 @@ else
                 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add -
                 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
                 apt-get update
-                apt-get install -y nvidia-docker2
+                DEBIAN_FRONTEND=noninteractive apt-get install -y nvidia-docker2
         else
                 curl -sL https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
                 curl -sL https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
                 apt-get update
-                apt-get install -y nvidia-container-toolkit
+                DEBIAN_FRONTEND=noninteractive apt-get install -y nvidia-container-toolkit
         fi
 
 fi
