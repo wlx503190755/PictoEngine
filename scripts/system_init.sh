@@ -143,4 +143,4 @@ fi
 
 echo "初始化完成！"
 echo "请运行以下命令验证 NVIDIA Docker 是否正常工作："
-echo "  docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi"
+echo "  docker run --rm --gpus all nvidia/cuda:12.9.0-base-ubuntu22.04 nvidia-smi"
