@@ -22,7 +22,7 @@ custom_nodes:
     install_path: custom_nodes/ComfyUI-controlnet_aux
     models:
       - url: https://huggingface.co/lllyasviel/Annotators
-        path: custom_nodes/comfyui_controlnet_aux/ckpts/lllyasviel/Annotators
+        path: custom_nodes/ComfyUI-controlnet_aux/ckpts/lllyasviel/Annotators
       - url: https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth
         path: custom_nodes/ComfyUI-controlnet_aux/ckpts/depth-anything/Depth-Anything-V2-Large/depth_anything_v2_vitl.pth
       - url: https://huggingface.co/yzd-v/DWPose/resolve/main/yolox_l.onnx
