@@ -12,7 +12,12 @@ if [ ! -d "$clone_dir" ]; then
     mkdir -p "$clone_dir"
 fi
 # 克隆项目代码
-git clone https://github.com/pictorialink/PictoEngine.git "$clone_dir/PictoEngine"
+if [ -d "$clone_dir/PictoEngine" ]; then
+    cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
+    git pull origin main
+else
+    git clone https://github.com/pictorialink/PictoEngine.git "$clone_dir"
+fi
 
 # 进入项目目录
 cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
