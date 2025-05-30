@@ -120,7 +120,7 @@ def main():
         return
     
     # 基础目录
-    base_dir = '/data'
+    base_dir = "$clone_dir"
     
     # 遍历所有配置部分
     for section_name, section_data in config.items():
