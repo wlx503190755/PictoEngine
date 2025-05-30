@@ -8,8 +8,9 @@ clone_dir=${clone_dir:-/data/}
 export CLONE_DIR="$clone_dir"
 
 # 创建目录（如果不存在）
-mkdir -p "$clone_dir"
-
+if [ ! -d "$clone_dir" ]; then
+    mkdir -p "$clone_dir"
+fi
 # 克隆项目代码
 git clone https://github.com/pictorialink/PictoEngine.git "$clone_dir"
 
