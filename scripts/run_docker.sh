@@ -64,7 +64,7 @@ copy_container_files() {
 # 下载模型
 download_models() {
     echo -e "${YELLOW}开始下载模型...${NC}"
-    $DATA_DIR/venv/bin/python "$SCRIPT_DIR/download_models.py"
+    python3 "$SCRIPT_DIR/download_models.py"
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}模型下载完成${NC}"
     else
