@@ -36,3 +36,4 @@ chmod +x /usr/local/bin/pictorialink
 # 运行初始化和启动命令
 pictorialink init
 pictorialink start 
+echo "可用命令: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
