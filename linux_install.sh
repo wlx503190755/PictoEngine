@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 提示用户输入克隆目录
-read -p "请输入要克隆到的目录（默认是 /data/）： " clone_dir
+read -p "请输入要克隆到的目录（默认是 /data）： " clone_dir
 
 # 如果用户没有输入，则使用 /data/
 clone_dir=${clone_dir:-/data}
