@@ -4,7 +4,7 @@
 read -p "请输入要克隆到的目录（默认是 /data/）： " clone_dir
 
 # 如果用户没有输入，则使用 /data/
-clone_dir=${clone_dir:-/data/}
+clone_dir=${clone_dir:-/data}
 export CLONE_DIR="$clone_dir"
 
 # 创建目录（如果不存在）
