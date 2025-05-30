@@ -19,11 +19,12 @@ else
     git clone https://github.com/pictorialink/PictoEngine.git "$clone_dir"
 fi
 
-# 进入项目目录
-cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
+# 创建一个新的脚本文件
+echo '#!/bin/bash' > /usr/local/bin/pictorialink
+echo 'bash /path/to/PictoEngine/scripts/run_docker.sh "$@"' >> /usr/local/bin/pictorialink
 
-# 修改脚本权限
-chmod +x scripts/run_docker.sh
+# 使新脚本可执行
+chmod +x /usr/local/bin/pictorialink 
 
 # 添加别名到 ~/.bashrc 或 ~/.bash_profile
 if ! grep -q "alias pictorialink=" /etc/profile; then
