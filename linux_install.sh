@@ -23,6 +23,7 @@ chmod +x scripts/run_docker.sh
 # 添加别名到 ~/.bashrc 或 ~/.bash_profile
 if ! grep -q "alias pictorialink=" ~/.bashrc; then
     echo "alias pictorialink='$(pwd)/scripts/run_docker.sh'" >> ~/.bashrc
+    alias pictorialink='$(pwd)/scripts/run_docker.sh'
 fi
 # 使别名生效
 source ~/.bashrc
