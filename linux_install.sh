@@ -21,8 +21,9 @@ cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
 chmod +x scripts/run_docker.sh
 
 # 添加别名到 ~/.bashrc 或 ~/.bash_profile
-echo "alias pictorialink='$(pwd)/scripts/run_docker.sh'" >> ~/.bashrc
-
+if ! grep -q "alias pictorialink=" ~/.bashrc; then
+    echo "alias pictorialink='$(pwd)/scripts/run_docker.sh'" >> ~/.bashrc
+fi
 # 使别名生效
 source ~/.bashrc
 
