@@ -28,7 +28,7 @@ chmod +x scripts/run_docker.sh
 
 # 创建一个新的脚本文件
 echo '#!/bin/bash' > /usr/local/bin/pictorialink
-echo 'bash /path/to/PictoEngine/scripts/run_docker.sh "$@"' >> /usr/local/bin/pictorialink
+echo 'bash /$clone_dir/PictoEngine/scripts/run_docker.sh "$@"' >> /usr/local/bin/pictorialink
 
 # 使新脚本可执行
 chmod +x /usr/local/bin/pictorialink 
