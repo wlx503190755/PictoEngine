@@ -4,56 +4,56 @@ import sys
 import yaml
 
 def run_command(command):
-    """运行命令并检查是否成功"""
+    """Run command and check if successful"""
     result = subprocess.run(command, shell=True)
     if result.returncode != 0:
-        print(f"命令失败: {command}")
+        print(f"Command failed: {command}")
         sys.exit(1)
 
 def install_conda():
-    """安装 Conda"""
-    print("正在安装 Conda...")
+    """Install Conda"""
+    print("Installing Conda...")
     if not shutil.which("conda"):
         run_command("curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh")
         run_command("bash Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda3")
         os.environ["PATH"] = f"{os.path.expanduser('~')}/miniconda3/bin:" + os.environ["PATH"]
-        print("Conda 安装完成")
+        print("Conda installation completed")
     else:
-        print("Conda 已安装")
+        print("Conda is already installed")
 
 def create_conda_env():
-    """创建并激活 Conda 虚拟环境"""
-    print("正在创建 Conda 虚拟环境...")
+    """Create and activate Conda virtual environment"""
+    print("Creating Conda virtual environment...")
     run_command("conda create -n comfyui_env python=3.10 wget git git-lfs -y")
     run_command("source activate comfyui_env")
 
 def clone_comfyui():
-    """克隆 ComfyUI 并安装依赖"""
-    print("正在克隆 comfyui...")
-    target_dir = "ComfyUI"  # 目标目录
-    if not os.path.exists(target_dir):  # 检查目录是否存在
-        os.makedirs(target_dir)  # 创建目录
-    os.chdir(target_dir)  # 切换到 ComfyUI 目录
-    run_command("git clone https://github.com/comfyanonymous/ComfyUI.git .")  # 克隆到当前目录
-    print("正在安装 comfyui 依赖...")
+    """Clone ComfyUI and install dependencies"""
+    print("Cloning comfyui...")
+    target_dir = "ComfyUI"  # Target directory
+    if not os.path.exists(target_dir):  # Check if directory exists
+        os.makedirs(target_dir)  # Create directory
+    os.chdir(target_dir)  # Change to ComfyUI directory
+    run_command("git clone https://github.com/comfyanonymous/ComfyUI.git .")  # Clone to current directory
+    print("Installing comfyui dependencies...")
     run_command("pip install -r requirements.txt")
 
 def install_nodes():
-    """根据 custom_nodes.yml 文件安装节点"""
+    """Install nodes based on custom_nodes.yml file"""
     if os.path.exists("docker/configs/custom_nodes.yml"):
         with open("docker/configs/custom_nodes.yml", 'r') as file:
             nodes_config = yaml.safe_load(file)
-            # 这里可以根据 nodes_config 的内容进行节点安装
+            # Here you can install nodes based on the content of nodes_config
             run_command("python docker/scripts/install_nodes.py")
     else:
-        print("未找到 custom_nodes.yml 文件")
+        print("custom_nodes.yml file not found")
 
 def download_models():
-    """根据 custom_nodes.yml 文件下载模型"""
+    """Download models based on custom_nodes.yml file"""
     if os.path.exists("docker/configs/custom_nodes.yml"):
         run_command("python scripts/download_models.py")
     else:
-        print("未找到 custom_nodes.yml 文件")
+        print("custom_nodes.yml file not found")
 
 if __name__ == "__main__":
     install_conda()
@@ -61,4 +61,4 @@ if __name__ == "__main__":
     clone_comfyui()
     install_nodes()
     download_models()
-    print("脚本执行完成")
+    print("Script execution completed")
