@@ -66,7 +66,7 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
         yum install -y docker-ce docker-ce-cli containerd.io git git-lfs
     else
         # Ubuntu/Debian
-        DEBIAN_FRONTEND=noninteractive apt-get remove -y docker docker-engine docker.io containerd runc
+        apt-get remove -y docker docker-engine docker.io containerd runc
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
             ca-certificates \
