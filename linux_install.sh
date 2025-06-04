@@ -17,6 +17,7 @@ if [ "$lang_choice" -eq 1 ]; then
     commands="可用命令: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
 else
     export lang="en"
+    echo 'lang="en"' >> /etc/environment
     install_condition="Please use the root user to install"
     prompt_clone_dir="Please enter the directory to clone to (default is /data): "
     project_not_exist="Project directory does not exist"
