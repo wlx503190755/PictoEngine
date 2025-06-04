@@ -53,8 +53,7 @@ chmod +x scripts/run_docker.sh
 
 
 echo '#!/bin/bash' > /usr/local/bin/pictorialink
-echo 'bash "$CLONE_DIR/PictoEngine/scripts/run_docker.sh" "$@"' >> /usr/local/bin/pictorialink
-
+echo "bash \"$clone_dir/PictoEngine/scripts/run_docker.sh\" \"\$@\"" >> /usr/local/bin/pictorialink
 
 chmod +x /usr/local/bin/pictorialink 
 
