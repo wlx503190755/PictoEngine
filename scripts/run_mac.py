@@ -30,8 +30,11 @@ def create_conda_env():
 def clone_comfyui():
     """克隆 ComfyUI 并安装依赖"""
     print("正在克隆 comfyui...")
-    run_command("git clone https://github.com/comfyanonymous/ComfyUI.git")
-    os.chdir("ComfyUI")
+    target_dir = "ComfyUI"  # 目标目录
+    if not os.path.exists(target_dir):  # 检查目录是否存在
+        os.makedirs(target_dir)  # 创建目录
+    os.chdir(target_dir)  # 切换到 ComfyUI 目录
+    run_command("git clone https://github.com/comfyanonymous/ComfyUI.git .")  # 克隆到当前目录
     print("正在安装 comfyui 依赖...")
     run_command("pip install -r requirements.txt")
 
