@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 
-lang = os.getenv("lang", "en") 
+lang=${lang:-en} 
 
 
 if [ "$lang" == "en" ]; then

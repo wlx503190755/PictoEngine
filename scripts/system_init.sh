@@ -3,7 +3,7 @@
 set -e
 
 
-lang = os.getenv("lang", "en") 
+lang=${lang:-en} 
 
 
 if [ "$lang" == "en" ]; then
