@@ -1,4 +1,4 @@
 #!/bin/bash
 #
-## 开启 ComfyUI Server
+## start ComfyUI Server
 python main.py --listen

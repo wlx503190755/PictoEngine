@@ -6,107 +6,107 @@ import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# 颜色定义
+# Color definitions
 class Colors:
     RED = '\033[0;31m'
     GREEN = '\033[0;32m'
     YELLOW = '\033[1;33m'
     NC = '\033[0m'  # No Color
 
-# 定义目录路径
+# Define directory paths
 COMFYUI_DIR = Path("/ComfyUI")
 CONFIG_DIR = Path("/app/configs")
 CONFIG_FILE = CONFIG_DIR / "custom_nodes.yml"
 
 def run_command(cmd: List[str], cwd: Optional[str] = None) -> None:
-    """运行命令并打印输出"""
+    """Run command and print output"""
     subprocess.run(cmd, cwd=cwd, check=True)
 
 def install_node(node: Dict) -> None:
-    """安装单个节点"""
+    """Install a single node"""
     name = node["name"]
     node_type = node["type"]
     repo_url = node["repository"]
     version = node.get("version", "")
     install_path = node["install_path"]
     
-    print(f"\n{Colors.YELLOW}处理节点: {name} (类型: {node_type}){Colors.NC}")
+    print(f"\n{Colors.YELLOW}Processing node: {name} (Type: {node_type}){Colors.NC}")
     
     if node_type != "Community":
-        print("跳过非 Community 类型节点")
+        print("Skipping non-Community type node")
         return
     
     full_path = COMFYUI_DIR / install_path
     
-    # 检查安装路径
+    # Check installation path
     if full_path.exists():
-        print("节点目录已存在，更新中...")
+        print("Node directory already exists, updating...")
         os.chdir(full_path)
         run_command(["git", "fetch", "origin"])
         
         if version:
             current_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
             if current_hash != version:
-                print(f"切换到指定 commit: {version}")
+                print(f"Switching to specified commit: {version}")
                 run_command(["git", "checkout", version])
             else:
-                print("已经在指定的 commit 上")
+                print("Already on the specified commit")
         else:
-            print("未指定版本，使用最新版本")
+            print("No version specified, using the latest version")
             run_command(["git", "pull", "origin", "main"])
     else:
-        print("克隆节点仓库...")
+        print("Cloning node repository...")
         run_command(["git", "clone", repo_url, str(full_path)])
         if version:
             os.chdir(full_path)
-            print(f"切换到指定 commit: {version}")
+            print(f"Switching to specified commit: {version}")
             run_command(["git", "checkout", version])
     
-    # 安装依赖
+    # Install dependencies
     requirements_file = full_path / "requirements.txt"
     if requirements_file.exists():
-        print("安装依赖...")
+        print("Installing dependencies...")
         run_command([str(COMFYUI_DIR / "venv/bin/pip"), "install", "-r", str(requirements_file)])
     
-    # 检查是否有额外的安装脚本
+    # Check for additional installation scripts
     install_script = full_path / "install.py"
     if install_script.exists():
-        print("运行安装脚本...")
+        print("Running installation script...")
         run_command([str(COMFYUI_DIR / "venv/bin/python"), str(install_script)])
 
 def main():
-    # 检查配置文件
+    # Check configuration file
     if not CONFIG_FILE.exists():
-        print(f"{Colors.RED}错误: 未找到配置文件 {CONFIG_FILE}{Colors.NC}")
+        print(f"{Colors.RED}Error: Configuration file {CONFIG_FILE} not found{Colors.NC}")
         exit(1)
     
-    # 读取配置文件
+    # Read configuration file
     with open(CONFIG_FILE, 'r') as f:
         config = yaml.safe_load(f)
     
     nodes = config.get('custom_nodes', [])
-    print(f"{Colors.YELLOW}开始安装自定义节点...{Colors.NC}")
-    print(f"找到 {len(nodes)} 个节点配置")
+    print(f"{Colors.YELLOW}Starting installation of custom nodes...{Colors.NC}")
+    print(f"Found {len(nodes)} node configurations")
     
-    # 安装所有节点
+    # Install all nodes
     for node in nodes:
         install_node(node)
     
-    print(f"\n{Colors.GREEN}所有节点安装完成{Colors.NC}")
+    print(f"\n{Colors.GREEN}All nodes installed successfully{Colors.NC}")
     
-    # 检查未配置的节点
-    print(f"\n{Colors.YELLOW}检查额外节点...{Colors.NC}")
+    # Check for unconfigured nodes
+    print(f"\n{Colors.YELLOW}Checking for additional nodes...{Colors.NC}")
     configured_nodes = {node['name'] for node in nodes}
     
     for node_dir in (COMFYUI_DIR / "custom_nodes").glob("*/"):
         node_name = node_dir.name
         if node_name not in configured_nodes:
-            print(f"发现额外节点: {node_name}，安装依赖")
+            print(f"Found additional node: {node_name}, installing dependencies")
             requirements_file = node_dir / "requirements.txt"
             if requirements_file.exists():
                 run_command([str(COMFYUI_DIR / "venv/bin/pip"), "install", "-r", str(requirements_file)])
     
-    print(f"\n{Colors.GREEN}节点安装和依赖检查完成{Colors.NC}")
+    print(f"\n{Colors.GREEN}Node installation and dependency check completed{Colors.NC}")
 
 if __name__ == "__main__":
     main() 

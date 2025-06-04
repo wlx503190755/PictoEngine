@@ -1,39 +1,67 @@
 #!/bin/bash
 
-# 提示用户输入克隆目录
-read -p "请输入要克隆到的目录（默认是 /data）： " clone_dir
+# 语言选项
+echo "请选择语言 / Please select a language:"
+echo "1) 中文"
+echo "2) English"
+read -p "输入选项 (1或2) / Enter options (1 or 2): " lang_choice
 
-# 如果用户没有输入，则使用 /data/
+# 根据用户选择设置语言
+if [ "$lang_choice" -eq 1 ]; then
+    export lang="zh"
+    echo 'lang="zh"' >> /etc/environment
+    install_condition="请使用root用户安装"
+    prompt_clone_dir="请输入要克隆到的目录（默认是 /data）： "
+    project_not_exist="项目目录不存在"
+    clone_success="克隆成功"
+    commands="可用命令: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
+else
+    export lang="en"
+    install_condition="Please use the root user to install"
+    prompt_clone_dir="Please enter the directory to clone to (default is /data): "
+    project_not_exist="Project directory does not exist"
+    clone_success="Clone successful"
+    commands="Available commands: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
+fi
+
+echo "$install_condition"
+read -p "$prompt_clone_dir" clone_dir
+
+
 clone_dir=${clone_dir:-/data}
 export CLONE_DIR="$clone_dir"
 
-# 创建目录（如果不存在）
+
 if [ ! -d "$clone_dir" ]; then
     mkdir -p "$clone_dir"
 fi
-# 克隆项目代码
+
+
 if [ -d "$clone_dir/PictoEngine" ]; then
-    cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
+    cd "$clone_dir/PictoEngine" || { echo "$project_not_exist"; exit 1; }
     git pull origin main
 else
     git clone https://github.com/pictorialink/PictoEngine.git "$clone_dir"
+    echo "$clone_success"
 fi
 
 
-# 进入项目目录
-cd "$clone_dir/PictoEngine" || { echo "项目目录不存在"; exit 1; }
+cd "$clone_dir/PictoEngine" || { echo "$project_not_exist"; exit 1; }
 
-# 修改脚本权限
+
 chmod +x scripts/run_docker.sh
 
-# 创建一个新的脚本文件
-echo '#!/bin/bash' > /usr/local/bin/pictorialink
-echo 'bash /$CLONE_DIR/PictoEngine/scripts/run_docker.sh "$@"' >> /usr/local/bin/pictorialink
 
-# 使新脚本可执行
+echo '#!/bin/bash' > /usr/local/bin/pictorialink
+echo 'bash "$CLONE_DIR/PictoEngine/scripts/run_docker.sh" "$@"' >> /usr/local/bin/pictorialink
+
+
 chmod +x /usr/local/bin/pictorialink 
 
-# 运行初始化和启动命令
+
 pictorialink init
 pictorialink start 
-echo "可用命令: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
+
+
+echo "$commands"
+
