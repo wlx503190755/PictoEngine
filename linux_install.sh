@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 语言选项
-echo "请选择语言 / Please select a language:"
-echo "1) 中文"
+echo "请选择语言 / Please select language:"
+echo "1) 中文 (Chinese) "
 echo "2) English"
-read -p "输入选项 (1或2) / Enter options (1 or 2): " lang_choice
+read -p "输入选择 (Enter choice) [1/2]:  " lang_choice
 
 # 根据用户选择设置语言
 if [ "$lang_choice" -eq 1 ]; then
