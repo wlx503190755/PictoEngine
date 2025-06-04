@@ -1,4 +1,4 @@
 #!/bin/bash
 #
 ## start ComfyUI Server
-python main.py --listen
+python3 main.py --listen
