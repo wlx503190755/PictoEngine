@@ -158,7 +158,7 @@ build() {
 init() {
     init_system
     read -p "$OPERATION_PROMPT" choice
-    if [ "$choice" -eq 1 ]; then
+    if [ "$choice" == "1" ]; then
         echo -e "${YELLOW}$LOCAL_BUILD_START${NC}"
         build
     else
