@@ -8,6 +8,7 @@ import socket
 
 
 lang = os.getenv("lang", "en") 
+base_dir = os.getenv("CLONE_DIR", ".")
 
 messages = {
     "zh": {
@@ -149,7 +150,7 @@ def main():
         print(messages[lang]["error_empty_config"])
         return
     
-    base_dir = os.getenv("CLONE_DIR", ".")
+    
     
     for section_name, section_data in config.items():
         if not isinstance(section_data, list):
