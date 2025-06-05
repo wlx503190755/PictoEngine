@@ -40,7 +40,7 @@ if [ "$lang" == "en" ]; then
     NO_BACKUP_FOUND="No backup found"
     RESTORE_COMPLETED="Restore completed"
     USAGE="Usage: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="Please choose an operation: Enter 'local' for local build, enter 'download' to download the image: "
+    OPERATION_PROMPT="Please choose an operation: 1) local build, 2) download the image: [1/2]"
 else
     INIT_START="开始初始化系统..."
     INIT_SUCCESS="系统初始化完成"
@@ -71,7 +71,7 @@ else
     NO_BACKUP_FOUND="未找到备份"
     RESTORE_COMPLETED="恢复完成"
     USAGE="用法: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="请选择操作: 输入 'local' 进行本地构建，输入 'download' 下载镜像: "
+    OPERATION_PROMPT="请选择操作: 1) 本地构建镜像，2) 下载远程镜像: [1/2]"
 fi
 
 
@@ -158,7 +158,7 @@ build() {
 init() {
     init_system
     read -p "$OPERATION_PROMPT" choice
-    if [ "$choice" == "local" ]; then
+    if [ "$choice" -eq 1 ]; then
         echo -e "${YELLOW}$LOCAL_BUILD_START${NC}"
         build
     else
