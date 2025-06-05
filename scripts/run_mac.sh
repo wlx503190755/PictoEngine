@@ -1,9 +1,11 @@
 #!/bin/bash
 
+read -p "$prompt_clone_dir" CLONE_DIR
+user_home=${CLONE_DIR:-$HOME} 
+lang=${lang:-en}
 
-read -p "请输入您的 HOME 目录（默认是 $HOME）： " user_home
-user_home=${user_home:-$HOME} 
-
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 run_command() {
     # Run command and check if successful
     "$@"
@@ -46,30 +48,30 @@ clone_comfyui() {
     run_command pip install -r requirements.txt
 }
 
-install_nodes() {
-    # Install nodes based on custom_nodes.yml file
-    if [ -f "docker/configs/custom_nodes.yml" ]; then
-        nodes_config=$(cat docker/configs/custom_nodes.yml)
-        # Here you can install nodes based on the content of nodes_config
-        run_command python docker/scripts/install_nodes.py
-    else
-        echo "custom_nodes.yml file not found"
-    fi
-}
+#install_nodes() {
+#    # Install nodes based on custom_nodes.yml file
+#    if [ -f "$PROJECT_ROOT/docker/configs/custom_nodes.yml" ]; then
+#        nodes_config=$(cat $PROJECT_ROOT/docker/configs/custom_nodes.yml)
+#        # Here you can install nodes based on the content of nodes_config
+#        run_command python $PROJECT_ROOT/docker/scripts/install_nodes.py
+#    else
+#        echo "custom_nodes.yml file not found"
+#    fi
+#}
 
-download_models() {
+#download_models() {
     # Download models based on custom_nodes.yml file
-    if [ -f "docker/configs/custom_nodes.yml" ]; then
-        run_command python scripts/download_models.py
-    else
-        echo "custom_nodes.yml file not found"
-    fi
-}
+    #if [ -f "$PROJECT_ROOT/docker/configs/custom_nodes.yml" ]; then
+    #    run_command python $PROJECT_ROOT/scripts/download_models.py
+    #else
+    #    echo "custom_nodes.yml file not found"
+    #fi
+#}
 
 # Main execution
 install_conda
 create_conda_env
 clone_comfyui
-install_nodes
-download_models
+#install_nodes
+#download_models
 echo "Script execution completed"
