@@ -40,7 +40,7 @@ if [ "$lang" == "en" ]; then
     NO_BACKUP_FOUND="No backup found"
     RESTORE_COMPLETED="Restore completed"
     USAGE="Usage: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="Please choose an operation: 1) local build, 2) download the image: [1/2]"
+    OPERATION_PROMPT="Please choose an operation, default to download the image: 1) local build, 2) download the image: [1/2]"
 else
     INIT_START="开始初始化系统..."
     INIT_SUCCESS="系统初始化完成"
@@ -71,7 +71,7 @@ else
     NO_BACKUP_FOUND="未找到备份"
     RESTORE_COMPLETED="恢复完成"
     USAGE="用法: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="请选择操作: 1) 本地构建镜像，2) 下载远程镜像: [1/2]"
+    OPERATION_PROMPT="请选择操作,默认下载远程镜像: 1) 本地构建镜像，2) 下载远程镜像: [1/2]"
 fi
 
 
