@@ -14,7 +14,6 @@ if [ "$lang_choice" -eq 1 ]; then
     prompt_server_port="请输入服务端口（默认是 8188）： "
     project_not_exist="项目目录不存在"
     clone_success="克隆成功"
-    server_start_success="服务已成功启动，请将如下地址填写至客户端：$server_url"
     commands="可用命令: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
 elif [ "$input_choice" -eq 2 ]; then
     export lang="en"
@@ -31,7 +30,6 @@ else
     prompt_server_port="Please enter the server port (default is 8188): "
     project_not_exist="Project directory does not exist"
     clone_success="Clone successful"
-    server_start_success="Service has been started successfully, please fill the following address to the client: $server_url"
     commands="Available commands: pictorialink init, pictorialink start, pictorialink stop, pictorialink restart, pictorialink dlmodels, pictorialink update, pictorialink logs, pictorialink status"
 fi
 
@@ -50,7 +48,7 @@ export server_port="$server_port"
 export lang="$lang"
 EOF
 
-sudo chmod +x /etc/profile.d/custom_vars.sh
+chmod +x /etc/profile.d/custom_vars.sh
 source /etc/profile
 
 if [ ! -d "$clone_dir" ]; then
@@ -78,12 +76,8 @@ echo "bash \"$clone_dir/PictoEngine/scripts/run_docker.sh\" \"\$@\"" >> /usr/loc
 
 chmod +x /usr/local/bin/pictorialink 
 
-
 pictorialink init
 pictorialink start 
 
-server_url=`ip -br addr show | awk -v port="${server_port}" '$2 == "UP" && !/lo|docker|virbr|veth|br-|tun|tap/ {split($3, a, "/"); print "http://" a[1] ":" port}' || echo "http://127.0.0.1:${server_port}"`
 
 echo "$commands"
-echo "$server_start_success"
-

@@ -29,7 +29,7 @@ if [ "$lang" == "en" ]; then
     LOCAL_BUILD_START="Starting local build..."
     DOCKER_IMAGE_DOWNLOAD_START="Downloading image according to docker-compose.yml..."
     SERVICE_START_START="Starting service..."
-    SERVICE_START_SUCCESS="Service started successfully"
+    SERVICE_START_SUCCESS="Service started successfully, please fill the following address to the PIC client: "
     SERVICE_START_FAILURE="Service start failed"
     SERVICE_STOP_START="Stopping service..."
     SERVICE_STOP_SUCCESS="Service stopped successfully"
@@ -60,7 +60,7 @@ else
     LOCAL_BUILD_START="开始本地构建..."
     DOCKER_IMAGE_DOWNLOAD_START="根据 docker-compose.yml 下载镜像..."
     SERVICE_START_START="启动服务..."
-    SERVICE_START_SUCCESS="服务启动成功"
+    SERVICE_START_SUCCESS="服务启动成功，请将如下地址填写至PIC客户端: "
     SERVICE_START_FAILURE="服务启动失败"
     SERVICE_STOP_START="停止服务..."
     SERVICE_STOP_SUCCESS="服务停止成功"
@@ -197,7 +197,9 @@ start() {
     cd "$PROJECT_ROOT/docker"
     docker-compose up -d
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}$SERVICE_START_SUCCESS${NC}"
+        source /etc/profile
+        server_url=`ip -br addr show | awk -v port="${server_port}" '$2 == "UP" && !/lo|docker|virbr|veth|br-|tun|tap/ {split($3, a, "/"); print "http://" a[1] ":" port}' || echo "http://127.0.0.1:${server_port}"`
+        echo -e "${GREEN}$SERVICE_START_SUCCESS${NC} $server_url"
     else
         echo -e "${RED}$SERVICE_START_FAILURE${NC}"
         exit 1
