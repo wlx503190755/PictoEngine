@@ -153,7 +153,7 @@ if ! command -v docker-compose &> /dev/null; then
 else
     echo "$DOCKER_COMPOSE_SKIP"
 fi
-pip install PyYAML
+apt install python3-yaml
 echo "$INIT_COMPLETE"
 echo "$NVIDIA_TEST_COMMAND"
 echo "$NVIDIA_TEST_COMMAND_EXAMPLE"
