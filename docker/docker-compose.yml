@@ -1,6 +1,6 @@
 services:
   comfyui:
-    image: pictoengine:latest
+    image: hqtech/pictoengine:latest
     build: .
     volumes:
       - /data/models:/ComfyUI/models:rw
@@ -9,7 +9,7 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
     ports:
-      - 8800:8188
+      - ${server_port}:8188
     stop_signal: SIGKILL
       #    detach: true
     deploy:

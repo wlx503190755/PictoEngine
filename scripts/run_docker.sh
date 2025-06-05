@@ -23,7 +23,7 @@ if [ "$lang" == "en" ]; then
     BUILD_START="Starting build..."
     BUILD_SUCCESS="Build successful"
     BUILD_FAILURE="Build failed"
-    INVALID_CHOICE="Invalid choice, please enter 'local' or 'docker'."
+    INVALID_CHOICE="Invalid choice, default to download the image."
     PROJECT_UPDATE_START="Starting project update..."
     PROJECT_UPDATE_SUCCESS="Project update completed"
     LOCAL_BUILD_START="Starting local build..."
@@ -40,7 +40,7 @@ if [ "$lang" == "en" ]; then
     NO_BACKUP_FOUND="No backup found"
     RESTORE_COMPLETED="Restore completed"
     USAGE="Usage: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="Please choose an operation: Enter 'local' for local build, enter 'docker' to download the image: "
+    OPERATION_PROMPT="Please choose an operation: Enter 'local' for local build, enter 'download' to download the image: "
 else
     INIT_START="开始初始化系统..."
     INIT_SUCCESS="系统初始化完成"
@@ -54,7 +54,7 @@ else
     BUILD_START="启动构建..."
     BUILD_SUCCESS="构建成功"
     BUILD_FAILURE="构建失败"
-    INVALID_CHOICE="无效选择，请输入 'local' 或 'docker'。"
+    INVALID_CHOICE="无效选择，默认下载镜像。"
     PROJECT_UPDATE_START="开始更新项目..."
     PROJECT_UPDATE_SUCCESS="项目更新完成"
     LOCAL_BUILD_START="开始本地构建..."
@@ -71,7 +71,7 @@ else
     NO_BACKUP_FOUND="未找到备份"
     RESTORE_COMPLETED="恢复完成"
     USAGE="用法: $0 {init|build|dlmodels|update|start|stop|restart|status|logs|backup|restore}"
-    OPERATION_PROMPT="请选择操作: 输入 'local' 进行本地构建，输入 'docker' 下载镜像: "
+    OPERATION_PROMPT="请选择操作: 输入 'local' 进行本地构建，输入 'download' 下载镜像: "
 fi
 
 
@@ -161,13 +161,10 @@ init() {
     if [ "$choice" == "local" ]; then
         echo -e "${YELLOW}$LOCAL_BUILD_START${NC}"
         build
-    elif [ "$choice" == "docker" ]; then
+    else
         echo -e "${YELLOW}$DOCKER_IMAGE_DOWNLOAD_START${NC}"
         cd "$PROJECT_ROOT/docker"
         docker-compose pull
-    else
-        echo -e "${RED}$INVALID_CHOICE${NC}"
-        exit 1
     fi
 
     copy_container_files
