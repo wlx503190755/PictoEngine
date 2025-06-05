@@ -17,14 +17,15 @@ run_command() {
 
 install_conda() {
     # Install Conda
-    echo "Installing Conda..."
+    echo "Checking for Conda installation..."
     if ! command -v conda &> /dev/null; then
+        echo "Installing Conda..."
         run_command curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
         run_command bash Miniconda3-latest-MacOSX-x86_64.sh -b -p "$user_home/miniconda3"  # 使用用户输入的 HOME
         export PATH="$user_home/miniconda3/bin:$PATH"
         echo "Conda installation completed"
     else
-        echo "Conda is already installed"
+        echo "Conda is already installed, skipping installation."
     fi
 }
 
