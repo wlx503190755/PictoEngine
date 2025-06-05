@@ -36,6 +36,7 @@ else
 fi
 
 echo "$install_condition"
+read -p "$prompt_server_port" server_port
 read -p "$prompt_clone_dir" clone_dir
 
 server_port=${server_port:-8188}
