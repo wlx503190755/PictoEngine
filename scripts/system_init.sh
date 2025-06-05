@@ -63,7 +63,7 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
         # RHEL/CentOS
         yum install -y yum-utils
         yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        yum install -y docker-ce docker-ce-cli containerd.io git git-lfs
+        yum install -y docker-ce docker-ce-cli containerd.io git git-lfs python3-PyYAML
     else
         # Ubuntu/Debian
         DEBIAN_FRONTEND=noninteractive apt-get remove -y docker docker-engine docker.io containerd runc || true
@@ -73,6 +73,7 @@ if ! systemctl is-active --quiet docker || ! command -v docker &> /dev/null; the
             curl \
             git \
             git-lfs \
+            python3-yaml \
             gnupg \
             lsb-release
 
@@ -153,7 +154,7 @@ if ! command -v docker-compose &> /dev/null; then
 else
     echo "$DOCKER_COMPOSE_SKIP"
 fi
-apt install python3-yaml
+
 echo "$INIT_COMPLETE"
 echo "$NVIDIA_TEST_COMMAND"
 echo "$NVIDIA_TEST_COMMAND_EXAMPLE"
