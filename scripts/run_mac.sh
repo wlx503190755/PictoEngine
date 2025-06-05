@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "$prompt_clone_dir" CLONE_DIR
+read -p "请输入安装目录：" CLONE_DIR
 user_home=${CLONE_DIR:-$HOME} 
 lang=${lang:-en}
 
