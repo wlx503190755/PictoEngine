@@ -14,8 +14,9 @@ class Colors:
     NC = '\033[0m'  # No Color
 
 # Define directory paths
-COMFYUI_DIR = Path("/ComfyUI")
-CONFIG_DIR = Path("/app/configs")
+COMFYUI_DIR = Path(os.getenv("CLONE_DIR", "/ComfyUI"))
+VENV_DIR = Path(os.getenv("VENV_DIR", "/ComfyUI/venv/bin"))
+CONFIG_DIR = Path(os.getenv("CONFIG_DIR", "/app/configs"))
 CONFIG_FILE = CONFIG_DIR / "custom_nodes.yml"
 
 def run_command(cmd: List[str], cwd: Optional[str] = None) -> None:
@@ -66,13 +67,13 @@ def install_node(node: Dict) -> None:
     requirements_file = full_path / "requirements.txt"
     if requirements_file.exists():
         print("Installing dependencies...")
-        run_command([str(COMFYUI_DIR / "venv/bin/pip"), "install", "-r", str(requirements_file)])
+        run_command([str(VENV_DIR / "pip"), "install", "-r", str(requirements_file)])
     
     # Check for additional installation scripts
     install_script = full_path / "install.py"
     if install_script.exists():
         print("Running installation script...")
-        run_command([str(COMFYUI_DIR / "venv/bin/python"), str(install_script)])
+        run_command([str(VENV_DIR / "python"), str(install_script)])
 
 def main():
     # Check configuration file
@@ -104,7 +105,7 @@ def main():
             print(f"Found additional node: {node_name}, installing dependencies")
             requirements_file = node_dir / "requirements.txt"
             if requirements_file.exists():
-                run_command([str(COMFYUI_DIR / "venv/bin/pip"), "install", "-r", str(requirements_file)])
+                run_command([str(VENV_DIR / "pip"), "install", "-r", str(requirements_file)])
     
     print(f"\n{Colors.GREEN}Node installation and dependency check completed{Colors.NC}")
 

@@ -6,10 +6,14 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# 语言设置
+# 变量设置
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 lang=${lang:-en}
-CLONE_DIR=${CLONE_DIR:-"$HOME/ComfyUI"}
-
+export CLONE_DIR="$HOME/ComfyUI"
+export VENV_DIR=""
+export CONFIG_DIR="$PROJECT_ROOT/docker/configs"
+export COMFYUI_BRANCH="v0.3.34"
 
 if [ "$lang" == "zh" ]; then
     INSTALL_START="开始安装 Conda..."
@@ -43,8 +47,7 @@ else
     DIR_NOT_EMPTY="Pulling latest changes..."
 fi
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 
 install_conda() {
     echo -e "${YELLOW}$INSTALL_START${NC}"
@@ -60,9 +63,9 @@ install_conda() {
 
 create_conda_env() {
     echo -e "${YELLOW}$ENV_CREATE_START${NC}"
-#    conda create -n comfyui_env python=3.10 wget git git-lfs -y
     conda init
-    conda env create -f $PROJECT_ROOT/docker/configs/environment.yml -n pictoengine
+    conda create -n pictoengine python=3.10 wget git git-lfs -y
+ #   conda env create -f $PROJECT_ROOT/docker/configs/environment.yml -n pictoengine
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ENV_CREATE_SUCCESS${NC}"
     else
@@ -74,7 +77,7 @@ create_conda_env() {
 activate_conda_env() {
     echo -e "${YELLOW}$ACTIVATE_START${NC}"
     source $HOME/.bash_profile  #和下面配置文件二选一，需要测试后确认
-    source $HOME/.zshrc
+#    source $HOME/.zshrc
     conda activate pictoengine    
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ACTIVATE_SUCCESS${NC}"
@@ -95,19 +98,26 @@ clone_comfyui() {
     if [ "$(ls -A $target_dir)" ]; then
         echo "$DIR_NOT_EMPTY"
         cd "$target_dir"
-        git pull
+        # 拉取指定分支的最新更新
+        git fetch origin
+        git checkout $COMFYUI_BRANCH
+        git pull origin $COMFYUI_BRANCH
         if [ $? -eq 0 ]; then
+            activate_conda_env
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
+            pip install -r $target_dir/requirements.txt
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
             exit 1
         fi
     else
         echo "$DIR_EMPTY"
-        cd "$target_dir"
-        git clone --branch v0.3.34 https://github.com/comfyanonymous/ComfyUI.git .
+        cd "$target_dir" 
+        git clone --branch $COMFYUI_BRANCH https://github.com/comfyanonymous/ComfyUI.git .
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
+            activate_conda_env
+            pip install -r $target_dir/requirements.txt
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
             exit 1
@@ -145,23 +155,36 @@ restart_comfyui() {
     start_comfyui
 }
 
-#install_nodes() {
-#    # Install nodes based on custom_nodes.yml file
-#    if [ -f "$PROJECT_ROOT/docker/configs/custom_nodes.yml" ]; then
-#        nodes_config=$(cat $PROJECT_ROOT/docker/configs/custom_nodes.yml)
-#        # Here you can install nodes based on the content of nodes_config
-#        run_command python $PROJECT_ROOT/docker/scripts/install_nodes.py
-#    else
-#        echo "custom_nodes.yml file not found"
-#    fi
-#}
+install_nodes() {
+    activate_conda_env
+    if [ -f "$PROJECT_ROOT/docker/configs/custom_nodes.yml" ]; then
+        python $PROJECT_ROOT/docker/scripts/install_nodes.py
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}$INSTALL_NODES_SUCCESS${NC}"
+        else
+            echo -e "${RED}$INSTALL_NODES_FAILURE${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${RED}$INSTALL_NODES_FAILURE${NC}"
+        exit 1
+    fi
+}
 
 download_models() {
   #  Download models based on custom_nodes.yml file
+    activate_conda_env
     if [ -f "$PROJECT_ROOT/docker/configs/custom_nodes.yml" ]; then
         python $PROJECT_ROOT/scripts/download_models.py
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}$DOWNLOAD_MODELS_SUCCESS${NC}"
+        else
+            echo -e "${RED}$DOWNLOAD_MODELS_FAILURE${NC}"
+            exit 1
+        fi
     else
-        echo "custom_nodes.yml file not found"
+        echo -e "${RED}$DOWNLOAD_MODELS_FAILURE${NC}"
+        exit 1
     fi
 }
 
