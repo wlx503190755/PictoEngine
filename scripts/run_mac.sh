@@ -27,7 +27,7 @@ if [ "$lang" == "zh" ]; then
     CLONE_START="正在克隆 ComfyUI..."
     CLONE_SUCCESS="ComfyUI 克隆成功"
     CLONE_FAILURE="克隆 ComfyUI 失败"
-    USAGE="用法: $0 {init_conda|clone|install_nodes|download_models|start|stop|restart}"
+    USAGE="用法: $0 {init_conda|init_comfyui|install_nodes|download_models|start|stop|restart}"
     DIR_EMPTY="目录为空，正在克隆仓库..."
     DIR_NOT_EMPTY="正在拉取最新更改..."
 else
@@ -42,7 +42,7 @@ else
     CLONE_START="Cloning ComfyUI..."
     CLONE_SUCCESS="ComfyUI cloned successfully"
     CLONE_FAILURE="Cloning ComfyUI failed"
-    USAGE="Usage: $0 {init_conda|clone|install_nodes|download_models|start|stop|restart}"
+    USAGE="Usage: $0 {init_conda|init_comfyui|install_nodes|download_models|start|stop|restart}"
     DIR_EMPTY="Directory is empty, cloning repository..."
     DIR_NOT_EMPTY="Pulling latest changes..."
 fi
@@ -194,7 +194,7 @@ main() {
             install_conda
             create_conda_env
             ;;
-        "clone")
+        "init_comfyui")
             clone_comfyui
             ;;
         "install_nodes")
