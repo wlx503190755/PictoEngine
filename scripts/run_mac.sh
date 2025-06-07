@@ -27,6 +27,16 @@ if [ "$lang" == "zh" ]; then
     CLONE_START="正在克隆 ComfyUI..."
     CLONE_SUCCESS="ComfyUI 克隆成功"
     CLONE_FAILURE="克隆 ComfyUI 失败"
+    START_START="启动comfyui服务"
+    START_SUCCESS="comfyui 启动成功"
+    START_FAILURE="comfyui 启动失败"
+    STOP_START="关闭comfyui服务"
+    STOP_SUCCESS="comfyui 已关闭"
+    STOP_FAILURE="comfyui 停止失败"
+    INSTALL_NODES_SUCCESS="节点安装成功"
+    INSTALL_NODES_FAILURE="节点安装失败"
+    DOWNLOAD_MODELS_SUCCESS="模型下载成功"
+    DOWNLOAD_MODELS_FAILURE="模型下载失败"
     USAGE="用法: $0 {init_conda|init_comfyui|install_nodes|download_models|start|stop|restart}"
     DIR_EMPTY="目录为空，正在克隆仓库..."
     DIR_NOT_EMPTY="正在拉取最新更改..."
@@ -42,6 +52,16 @@ else
     CLONE_START="Cloning ComfyUI..."
     CLONE_SUCCESS="ComfyUI cloned successfully"
     CLONE_FAILURE="Cloning ComfyUI failed"
+    START_START="Comfyui start"
+    START_SUCCESS="Comyui start successfully"
+    START_FAILURE="Comyui start failed"
+    STOP_START=""
+    STOP_SUCCESS=""
+    STOP_FAILURE=""
+    INSTALL_NODES_SUCCESS=
+    INSTALL_NODES_FAILURE=
+    DOWNLOAD_MODELS_SUCCESS=
+    DOWNLOAD_MODELS_FAILURE=
     USAGE="Usage: $0 {init_conda|init_comfyui|install_nodes|download_models|start|stop|restart}"
     DIR_EMPTY="Directory is empty, cloning repository..."
     DIR_NOT_EMPTY="Pulling latest changes..."
@@ -68,6 +88,7 @@ create_conda_env() {
  #   conda env create -f $PROJECT_ROOT/docker/configs/environment.yml -n pictoengine
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ENV_CREATE_SUCCESS${NC}"
+        conda env config vars set server_port="$server_port"
     else
         echo -e "${RED}$INSTALL_FAILURE${NC}"
         exit 1
@@ -76,8 +97,8 @@ create_conda_env() {
 
 activate_conda_env() {
     echo -e "${YELLOW}$ACTIVATE_START${NC}"
-    source $HOME/.bash_profile  #和下面配置文件二选一，需要测试后确认
-#    source $HOME/.zshrc
+#    source $HOME/.bash_profile  #和下面配置文件二选一，需要测试后确认
+    source $HOME/.zshrc
     conda activate pictoengine    
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ACTIVATE_SUCCESS${NC}"
@@ -90,7 +111,7 @@ activate_conda_env() {
 clone_comfyui() {
     echo -e "${YELLOW}$CLONE_START${NC}"
     target_dir="$HOME/ComfyUI"
-    
+    activate_conda_env
     if [ ! -d "$target_dir" ]; then
         mkdir -p "$target_dir"
     fi
@@ -103,8 +124,8 @@ clone_comfyui() {
         git checkout $COMFYUI_BRANCH
         git pull origin $COMFYUI_BRANCH
         if [ $? -eq 0 ]; then
-            activate_conda_env
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
+            pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
             pip install -r $target_dir/requirements.txt
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
@@ -116,7 +137,7 @@ clone_comfyui() {
         git clone --branch $COMFYUI_BRANCH https://github.com/comfyanonymous/ComfyUI.git .
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
-            activate_conda_env
+            pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
             pip install -r $target_dir/requirements.txt
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
@@ -129,7 +150,7 @@ start_comfyui() {
     echo -e "${YELLOW}$START_START${NC}"
     activate_conda_env
     target_dir="$HOME/ComfyUI"
-    python $target_dir/main.py --port 7860
+    nohup python $target_dir/main.py --port ${server_port} > $target_dir/comfyui.log 2>&1 &
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$START_SUCCESS${NC}"
     else
@@ -141,9 +162,10 @@ start_comfyui() {
 stop_comfyui() {
     echo -e "${YELLOW}$STOP_START${NC}"
     target_dir="$HOME/ComfyUI"
-    pkill -f "python $target_dir/main.py --port 7860"
+    pkill -f "python $target_dir/main.py --port ${server_port}"
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$STOP_SUCCESS${NC}"
+        truncate -s 0 $target_dir/comfyui.log
     else
         echo -e "${RED}$STOP_FAILURE${NC}" 
         exit 1
@@ -153,6 +175,11 @@ stop_comfyui() {
 restart_comfyui() {
     stop_comfyui
     start_comfyui
+}
+
+log_view()  {
+    target_dir="$HOME/ComfyUI"
+    tail -500f $target_dir/comfyui.log
 }
 
 install_nodes() {
@@ -190,9 +217,12 @@ download_models() {
 
 main() {
     case "$1" in
-        "init_conda")
+        "init")
             install_conda
             create_conda_env
+            clone_comfyui
+            install_nodes
+            download_models
             ;;
         "init_comfyui")
             clone_comfyui
@@ -200,7 +230,8 @@ main() {
         "install_nodes")
             install_nodes
             ;;
-        "download_models")
+        "        
+        "dlmodels")
             download_models
             ;;
         "start")
@@ -211,6 +242,9 @@ main() {
             ;;
         "restart")
             restart_comfyui
+            ;;
+        "logs")
+            log_view
             ;;
         *)
             echo "$USAGE"
