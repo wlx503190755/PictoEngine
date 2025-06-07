@@ -35,7 +35,7 @@ if [ -d "$HOME/PictoEngine" ]; then
     cd "$HOME/PictoEngine" || { echo "$project_not_exist"; exit 1; }
     git pull origin main
 else
-    git clone https://github.com/pictorialink/PictoEngine.git "$HOME/PictoEngine"
+    git clone https://github.com/wlx503190755/PictoEngine.git "$HOME/PictoEngine"
     echo "$clone_success"
 fi
 
