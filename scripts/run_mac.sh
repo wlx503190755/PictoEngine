@@ -230,7 +230,6 @@ main() {
         "install_nodes")
             install_nodes
             ;;
-        "        
         "dlmodels")
             download_models
             ;;
