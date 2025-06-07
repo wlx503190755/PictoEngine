@@ -97,7 +97,7 @@ create_conda_env() {
 
 activate_conda_env() {
     echo -e "${YELLOW}$ACTIVATE_START${NC}"
-#    source $HOME/.bash_profile  #和下面配置文件二选一，需要测试后确认
+    source $HOME/.bash_profile  #和下面配置文件二选一，需要测试后确认
     source $HOME/.zshrc
     conda activate pictoengine    
     if [ $? -eq 0 ]; then
