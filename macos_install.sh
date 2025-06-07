@@ -60,7 +60,7 @@ echo '#!/bin/bash' | sudo tee "$BIN_DIR/pictorialink"
 echo "bash \"$HOME/PictoEngine/scripts/run_mac.sh\" \"\$@\"" | sudo tee -a "$BIN_DIR/pictorialink"
 sudo chmod +x "$BIN_DIR/pictorialink"
 
-sudo chmod +x /usr/bin/pictorialink && source ~/.zshrc
+sudo chmod +x $BIN_DIR/pictorialink && source ~/.zshrc
 pictorialink init
 pictorialink start 
 
