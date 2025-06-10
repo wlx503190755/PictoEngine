@@ -54,8 +54,12 @@ else
     echo "目录 $BIN_DIR 已存在，直接继续 ..."
 fi
 
-# 继续执行下一步
-# 例如，创建脚本文件
+tee ~/.bash_profile >/dev/null <<EOF
+export server_port="$server_port"
+export lang="$lang"
+EOF
+
+
 echo '#!/bin/bash' | sudo tee "$BIN_DIR/pictorialink"
 echo "bash \"$HOME/PictoEngine/scripts/run_mac.sh\" \"\$@\"" | sudo tee -a "$BIN_DIR/pictorialink"
 sudo chmod +x "$BIN_DIR/pictorialink"
