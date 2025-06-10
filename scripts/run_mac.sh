@@ -85,7 +85,7 @@ create_conda_env() {
     echo -e "${YELLOW}$ENV_CREATE_START${NC}"
     conda init
     conda create -n pictoengine python=3.10 wget git git-lfs -y
-    conda install -c conda-forge cmake ffmpeg -y
+    conda install -c conda-forge cmake ffmpeg freetype pkg-config libpng -y
  #   conda env create -f $PROJECT_ROOT/docker/configs/environment.yml -n pictoengine
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ENV_CREATE_SUCCESS${NC}"
