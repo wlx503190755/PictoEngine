@@ -88,7 +88,7 @@ create_conda_env() {
  #   conda env create -f $PROJECT_ROOT/docker/configs/environment.yml -n pictoengine
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$ENV_CREATE_SUCCESS${NC}"
-        conda env config vars set server_port="$server_port"
+ #       conda env config vars set server_port="$server_port"
     else
         echo -e "${RED}$INSTALL_FAILURE${NC}"
         exit 1
@@ -127,6 +127,11 @@ clone_comfyui() {
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
             pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
             pip install -r $target_dir/requirements.txt
+            git clone --recursive https://github.com/dmlc/decord.git
+            cd decord && mkdir build && cd build
+            cmake .. -DUSE_METAL=ON
+            make -j$(sysctl -n hw.ncpu)
+            cd ../python && pip install -e .
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
             exit 1
@@ -139,6 +144,11 @@ clone_comfyui() {
             echo -e "${GREEN}$CLONE_SUCCESS${NC}"
             pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
             pip install -r $target_dir/requirements.txt
+            git clone --recursive https://github.com/dmlc/decord.git
+            cd decord && mkdir build && cd build
+            cmake .. -DUSE_METAL=ON
+            make -j$(sysctl -n hw.ncpu)
+            cd ../python && pip install -e .
         else
             echo -e "${RED}$CLONE_FAILURE${NC}"
             exit 1
