@@ -8,7 +8,7 @@ import socket
 
 
 lang = os.getenv("lang", "en") 
-base_dir = os.getenv("CLONE_DIR", ".")
+base_dir = os.getenv("CLONE_DIR", "/data")
 
 messages = {
     "zh": {
