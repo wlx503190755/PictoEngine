@@ -129,7 +129,7 @@ clone_comfyui() {
             pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
             pip install -r $target_dir/requirements.txt
             git clone --recursive https://github.com/dmlc/decord.git
-            cd decord && mkdir build && cd build
+            cd decord && rm -rf build && mkdir build && cd build 
             cmake .. -DUSE_METAL=ON
             make -j$(sysctl -n hw.ncpu)
             cd ../python && pip install -e .
